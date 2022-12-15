@@ -10,14 +10,17 @@ const styles = {
     margin: "0 -15px !important",
     width: "unset",
   },
+  gridCenter: {
+    justifyContent: "space-around !important"
+  }
 };
 
 export default function GridContainer(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
-  const { children, ...rest } = props;
+  const { children, center, ...rest } = props;
   return (
-    <Grid container {...rest} className={classes.grid}>
+    <Grid container {...rest} className={classes.grid + ` ${center && classes.gridCenter}`}>
       {children}
     </Grid>
   );
