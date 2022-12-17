@@ -14,18 +14,23 @@ import Button from "components/CustomButtons/Button.js";
 import ProductInfo from "components/AddProduct/ProductInfo.js";
 import Media from "components/AddProduct/Media.js";
 import Pricing from "components/AddProduct/Pricing.js";
+import Preview from "components/AddProduct/Preview.js";
 
 import Box from "@material-ui/core/Box";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import Typography from "@material-ui/core/Typography";
 
 // layout for this page
 import Admin from "layouts/Admin.js";
 
 import productStyles from "assets/jss/nextjs-material-dashboard/views/productStyle.js";
+import classNames from "classnames";
 
 function Products() {
+  const [productDetails, setProductDetails] = useState({});
+  const [errorInSteps, setErrorInSteps] = useState([1]);
   const [currentStep, setCurrentStep] = useState(0);
   const productCss = makeStyles(productStyles);
   const productClasses = productCss();
@@ -34,10 +39,25 @@ function Products() {
 
   const renderStepContent = () => {
     const step = {
-      0: <ProductInfo />,
-      1: <Media />,
-      2: <Pricing />,
-      3: <h1>step five</h1>,
+      0: (
+        <ProductInfo
+          setProductDetails={setProductDetails}
+          productDetails={productDetails}
+        />
+      ),
+      1: (
+        <Media
+          setProductDetails={setProductDetails}
+          productDetails={productDetails}
+        />
+      ),
+      2: (
+        <Pricing
+          setProductDetails={setProductDetails}
+          productDetails={productDetails}
+        />
+      ),
+      3: <Preview productDetails={productDetails} />,
     };
     return step[currentStep];
   };
@@ -46,9 +66,15 @@ function Products() {
     const buttonType = e.target.name;
     if (buttonType === "next" && currentStep <= 2) {
       setCurrentStep(currentStep + 1);
+
+      
     } else if (buttonType === "back" && currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
+  };
+
+  const isStepFailed = (step) => {
+    return errorInSteps.includes(step);
   };
 
   return (
@@ -60,9 +86,9 @@ function Products() {
       <GridContainer center>
         <GridItem xs={8} sm={8} md={8}>
           <Card>
-            <CardHeader color="dark">
+            <CardHeader color="dark" className={productClasses.p35}>
               <Box sx={{ width: "100%" }}>
-                <Stepper
+                {/* <Stepper
                   activeStep={currentStep}
                   alternativeLabel
                   className={productClasses.stepper}
@@ -72,6 +98,29 @@ function Products() {
                       <StepLabel className="stepLabelStyle">{label}</StepLabel>
                     </Step>
                   ))}
+                </Stepper> */}
+
+                <Stepper activeStep={currentStep} className={productClasses.stepper}>
+                  {steps.map((label, index) => {
+                    const labelProps = {};
+                    if (isStepFailed(index)) {
+                      labelProps.optional = (
+                        <Typography variant="caption" color="error">
+                          Error
+                        </Typography>
+                      );
+
+                      labelProps.error = true;
+                    }
+
+                    return (
+                      <Step key={label}>
+                        <StepLabel {...labelProps} className="stepLabelStyle">
+                          {label}
+                        </StepLabel>
+                      </Step>
+                    );
+                  })}
                 </Stepper>
               </Box>
             </CardHeader>
@@ -97,6 +146,16 @@ function Products() {
                     name="next"
                   >
                     Next
+                  </Button>
+                )}
+                {currentStep === 3 && (
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    // onClick={changeStep}
+                    name="next"
+                  >
+                    Add Product
                   </Button>
                 )}
               </div>

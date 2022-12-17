@@ -1,39 +1,19 @@
-import React, { useState } from "react";
-import { DropzoneDialog } from "material-ui-dropzone";
+import React from "react";
+import { DropzoneArea } from 'material-ui-dropzone';
 
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import Button from "components/CustomButtons/Button.js";
 
-export default function Media() {
-  const [open, setOpen] = useState(false);
-  const [files, setFiles] = useState();
-  const handleClose = () => {
-    setOpen(false);
-  };
+export default function Media({ productDetails, setProductDetails }) {
 
-  const handleSave = (data) => {
-    console.log(data);
-    setOpen(false);
-    setFiles(data);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
+  const onChange = (files) => {
+    setProductDetails({...productDetails, images: files});
   };
 
   return (
     <GridContainer spacing={2}>
-      <GridItem xs={6} sm={6} md={6}>
-        <Button color="rose" onClick={handleOpen.bind(this)}>Add Images</Button>
-        <DropzoneDialog
-          open={open}
-          onSave={handleSave.bind(this)}
-          acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
-          showPreviews={true}
-          maxFileSize={5000000}
-          onClose={handleClose.bind(this)}
-        />
+      <GridItem xs={12} sm={12} md={12}>
+        <DropzoneArea filesLimit={5} onChange={onChange} />
       </GridItem>
     </GridContainer>
   );

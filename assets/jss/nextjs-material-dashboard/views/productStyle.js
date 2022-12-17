@@ -171,6 +171,32 @@ const productStyle = {
       color: "rgba(" + hexToRgb(grayColor[8]) + ", 0.8)",
     },
   },
+  cardTitle: {
+    color: grayColor[2],
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "0px",
+    textDecoration: "none",
+    "& small": {
+      color: grayColor[1],
+      fontWeight: "400",
+      lineHeight: "1",
+    },
+  },
+  cardCategory: {
+    color: grayColor[0],
+    margin: "0",
+    fontSize: "14px",
+    marginTop: "0",
+    padding: "10px 0",
+    marginBottom: "0",
+  },
+
+  p35: {
+    padding: "35px !important"
+  }
 };
 
 export default productStyle;
